@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include QMK_KEYBOARD_H
 #include "moonlander.h"
 
 keyboard_config_t keyboard_config;
