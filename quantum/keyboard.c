@@ -140,10 +140,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef OS_DETECTION_ENABLE
 #    include "os_detection.h"
 #endif
-#ifdef ACHORDION_ENABLE
-#    include "process_achordion.h"
-#endif
-#if defined(LAYER_LOCK_ENABLE) && LAYER_LOCK_IDLE_TIMEOUT > 0
+#ifdef LAYER_LOCK_ENABLE
 #    include "layer_lock.h"
 #endif
 
@@ -292,6 +289,21 @@ __attribute__((weak)) void keyboard_pre_init_kb(void) {
     keyboard_pre_init_user();
 }
 
+/** \brief keyboard_pre_init_modules
+ *
+ * FIXME: needs doc
+ */
+__attribute__((weak)) void keyboard_pre_init_modules(void) {}
+
+/** \brief keyboard_pre_init_quantum
+ *
+ * FIXME: needs doc
+ */
+void keyboard_pre_init_quantum(void) {
+    keyboard_pre_init_modules();
+    keyboard_pre_init_kb();
+}
+
 /** \brief keyboard_post_init_user
  *
  * FIXME: needs doc
@@ -306,6 +318,23 @@ __attribute__((weak)) void keyboard_post_init_user(void) {}
 
 __attribute__((weak)) void keyboard_post_init_kb(void) {
     keyboard_post_init_user();
+}
+
+/** \brief keyboard_post_init_modules
+ *
+ * FIXME: needs doc
+ */
+
+__attribute__((weak)) void keyboard_post_init_modules(void) {}
+
+/** \brief keyboard_post_init_quantum
+ *
+ * FIXME: needs doc
+ */
+
+void keyboard_post_init_quantum(void) {
+    keyboard_post_init_modules();
+    keyboard_post_init_kb();
 }
 
 /** \brief matrix_can_read
@@ -326,7 +355,7 @@ void keyboard_setup(void) {
     eeprom_driver_init();
 #endif
     matrix_setup();
-    keyboard_pre_init_kb();
+    keyboard_pre_init_quantum();
 }
 
 #ifndef SPLIT_KEYBOARD
@@ -358,6 +387,13 @@ __attribute__((weak)) bool should_process_keypress(void) {
     return is_keyboard_master();
 }
 
+/** \brief housekeeping_task_modules
+ *
+ * Codegen will override this if community modules are enabled.
+ * This is specific to keyboard-level functionality.
+ */
+__attribute__((weak)) void housekeeping_task_modules(void) {}
+
 /** \brief housekeeping_task_kb
  *
  * Override this function if you have a need to execute code for every keyboard main loop iteration.
@@ -377,6 +413,7 @@ __attribute__((weak)) void housekeeping_task_user(void) {}
  * Invokes hooks for executing code after QMK is done after each loop iteration.
  */
 void housekeeping_task(void) {
+    housekeeping_task_modules();
     housekeeping_task_kb();
     housekeeping_task_user();
 }
@@ -496,7 +533,7 @@ void keyboard_init(void) {
     debug_enable = true;
 #endif
 
-    keyboard_post_init_kb(); /* Always keep this last */
+    keyboard_post_init_quantum(); /* Always keep this last */
 }
 
 /** \brief key_event_task
@@ -662,11 +699,7 @@ void quantum_task(void) {
     secure_task();
 #endif
 
-#ifdef ACHORDION_ENABLE
-    achordion_task();
-#endif
-
-#if defined(LAYER_LOCK_ENABLE) && LAYER_LOCK_IDLE_TIMEOUT > 0
+#ifdef LAYER_LOCK_ENABLE
     layer_lock_task();
 #endif
 }

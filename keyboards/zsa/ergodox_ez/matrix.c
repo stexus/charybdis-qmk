@@ -36,6 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "i2c_master.h"
 #include "gpio.h"
 #include "atomic_util.h"
+#include "matrix.h"
 
 /*
  * This constant define not debouncing time in msecs, assuming eager_pr.

@@ -246,6 +246,12 @@ extern layer_state_t layer_state;
 #ifdef LAYER_LOCK_ENABLE
 #    include "layer_lock.h"
 #endif
+
+#ifdef COMMUNITY_MODULES_ENABLE
+#    include "community_modules.h"
+#endif
+
+void set_single_default_layer(uint8_t default_layer);
 void set_single_persistent_default_layer(uint8_t default_layer);
 
 #define IS_LAYER_ON(layer) layer_state_is(layer)
