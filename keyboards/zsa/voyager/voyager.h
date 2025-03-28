@@ -5,9 +5,6 @@
 #pragma once
 
 #include "quantum.h"
-#ifdef ORYX_ENABLE
-#    include "oryx.h"
-#endif // ORYX_ENABLE
 
 extern bool mcp23018_leds[];
 

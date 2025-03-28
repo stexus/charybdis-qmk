@@ -5,27 +5,27 @@
 /*
 The Oryx Webhid protocol
 
-Each HID packet is a series of bytes.  The first byte is the packet type is the command. The rest of the bytes are the params.
+Each HID packet is a series of bytes.  The first byte is the packet type is the command. The rest of the bytes are the
+params.
 
 Before sending a packet, the host needs to be paired or should request a pairing code.
 
-The pairing code is a sequence of key positions derived from Oryx's firmware version code stored in the FIRMWARE_VERSION define.
+The pairing code is a sequence of key positions derived from Oryx's firmware version code stored in the FIRMWARE_VERSION
+define.
 
-Once the host has paired, it can freely use the commands define in the Oryx_Command_Code enum for which the board will always respond with a Oryx_Event_Code or a Oryx_Error_Code.
+Once the host has paired, it can freely use the commands define in the Oryx_Command_Code enum for which the board will
+always respond with a Oryx_Event_Code or a Oryx_Error_Code.
 */
 
 #include "quantum.h"
 #include "raw_hid.h"
 
-#ifndef RAW_ENABLE
-#    error "Raw hid needs to be enabled, please enable it!"
-#endif
 #ifndef RAW_EPSIZE
 #    define RAW_EPSIZE 32
 #endif
 
 #define ORYX_PROTOCOL_VERSION 0x04
-#define ORYX_STOP_BIT -2
+#define ORYX_STOP_BIT         -2
 
 enum Oryx_Command_Code {
     ORYX_CMD_GET_FW_VERSION,
@@ -87,8 +87,6 @@ void trigger_smart_layer(void);
 void set_webhid_effect(void);
 
 void oryx_layer_event(void);
-void layer_state_set_oryx(layer_state_t state);
-
 
 #if defined(RGB_MATRIX_ENABLE) && !defined(KEYBOARD_ergodox_ez_glow)
 extern RGB webhid_leds[RGB_MATRIX_LED_COUNT];

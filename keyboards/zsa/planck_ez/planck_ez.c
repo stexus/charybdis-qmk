@@ -15,10 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "planck_ez.h"
+#include QMK_KEYBOARD_H
 #include <ch.h>
 #include <hal.h>
 #include "keycodes.h"
+
+#ifdef COMMUNITY_MODULE_ORYX_ENABLE
+#    include "oryx.h"
+#endif // COMMUNITY_MODULE_ORYX_ENABLE
 
 keyboard_config_t keyboard_config;
 
@@ -119,7 +123,7 @@ void keyboard_pre_init_kb(void) {
     }
     // read kb settings from eeprom
     keyboard_config.raw = eeconfig_read_kb();
-#if defined(RGB_MATRIX_ENABLE) && defined(ORYX_CONFIGURATOR)
+#if defined(RGB_MATRIX_ENABLE)
     if (keyboard_config.rgb_matrix_enable) {
         rgb_matrix_set_flags(LED_FLAG_ALL);
     } else {
@@ -130,7 +134,7 @@ void keyboard_pre_init_kb(void) {
     keyboard_pre_init_user();
 }
 
-#if defined(RGB_MATRIX_ENABLE) && defined(ORYX_CONFIGURATOR)
+#if defined(RGB_MATRIX_ENABLE)
 void keyboard_post_init_kb(void) {
     rgb_matrix_enable_noeeprom();
     keyboard_post_init_user();
@@ -178,9 +182,6 @@ layer_state_t layer_state_set_kb(layer_state_t state) {
         default:
             break;
     }
-#ifdef ORYX_ENABLE
-    layer_state_set_oryx(state);
-#endif
     return state;
 }
 #endif

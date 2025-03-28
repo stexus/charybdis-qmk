@@ -22,6 +22,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "bootmagic.h"
 #include "gpio.h"
 
+#ifdef COMMUNITY_MODULE_ORYX_ENABLE
+#    include "oryx.h"
+#endif // COMMUNITY_MODULE_ORYX_ENABLE
+
 keyboard_config_t keyboard_config;
 
 __attribute__((weak)) void keyboard_post_init_sub(void) {
@@ -252,14 +256,6 @@ __attribute__((weak)) const is31_led PROGMEM g_is31_leds[RGB_MATRIX_LED_COUNT] =
 };
 // clang-format on
 
-#endif
-
-#ifdef ORYX_ENABLE
-layer_state_t layer_state_set_kb(layer_state_t state) {
-    state = layer_state_set_user(state);
-    layer_state_set_oryx(state);
-    return state;
-}
 #endif
 
 bool process_record_kb(uint16_t keycode, keyrecord_t *record) {

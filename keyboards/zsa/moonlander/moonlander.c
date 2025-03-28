@@ -17,7 +17,10 @@
  */
 
 #include QMK_KEYBOARD_H
-#include "moonlander.h"
+
+#ifdef COMMUNITY_MODULE_ORYX_ENABLE
+#    include "oryx.h"
+#endif // COMMUNITY_MODULE_ORYX_ENABLE
 
 keyboard_config_t keyboard_config;
 
@@ -150,10 +153,11 @@ void keyboard_pre_init_kb(void) {
 layer_state_t layer_state_set_kb(layer_state_t state) {
 #if !defined(MOONLANDER_USER_LEDS)
     state = layer_state_set_user(state);
-#    ifdef ORYX_ENABLE
-    layer_state_set_oryx(state);
-    if (rawhid_state.status_led_control) return state;
-#    endif
+#    ifdef COMMUNITY_MODULE_ORYX_ENABLE
+    if (rawhid_state.status_led_control) {
+        return state;
+    }
+#    endif // COMMUNITY_MODULE_ORYX_ENABLE
     if (is_launching || !keyboard_config.led_level) return state;
     bool LED_1 = false;
     bool LED_2 = false;

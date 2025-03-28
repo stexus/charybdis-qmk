@@ -2,7 +2,11 @@
 // Copyright 2023 Christopher Courtney, aka Drashna Jael're  (@drashna) <drashna@live.com>
 // SPDX-License-Identifier: GPL-2.0-or-later
 
-#include "voyager.h"
+#include QMK_KEYBOARD_H
+
+#ifdef COMMUNITY_MODULE_ORYX_ENABLE
+#    include "oryx.h"
+#endif // COMMUNITY_MODULE_ORYX_ENABLE
 
 keyboard_config_t keyboard_config;
 
@@ -104,9 +108,10 @@ void keyboard_pre_init_kb(void) {
 layer_state_t layer_state_set_kb(layer_state_t state) {
     state = layer_state_set_user(state);
 #if !defined(VOYAGER_USER_LEDS)
-#    ifdef ORYX_ENABLE
-    layer_state_set_oryx(state);
-    if (rawhid_state.status_led_control) return state;
+#    ifdef COMMUNITY_MODULE_ORYX_ENABLE
+    if (rawhid_state.status_led_control) {
+        return state;
+    }
 #    endif
     if (is_launching || !keyboard_config.led_level) return state;
     uint8_t layer = get_highest_layer(state);
