@@ -1,5 +1,4 @@
 #include "i2c_master.h"
-#include "pointing_device.h"
 #include "navigator_trackball.h"
 #include <stdint.h>
 #include <stdio.h>

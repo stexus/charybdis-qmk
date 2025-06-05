@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "report.h"
+#include "pointing_device.h"
 
 #    ifndef CIRQUE_PINNACLE_X_LOWER
 #        define CIRQUE_PINNACLE_X_LOWER 127 // min "reachable" X value
@@ -78,8 +79,6 @@
 #define CPI_5 1400
 #define CPI_6 1800
 #define CPI_7 2048
-
-#define CONSTRAIN_HID_XY(amt) ((amt) < XY_REPORT_MIN ? XY_REPORT_MIN : ((amt) > XY_REPORT_MAX ? XY_REPORT_MAX : (amt)))
 
 #ifndef NAVIGATOR_TRACKPAD_SCROLL_DIVIDER
 #    define NAVIGATOR_TRACKPAD_SCROLL_DIVIDER 10

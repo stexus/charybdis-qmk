@@ -1,6 +1,7 @@
 #pragma once
 #include <stdint.h>
 #include <stdbool.h>
+#include "pointing_device.h"
 
 #ifndef NAVIGATOR_TRACKBALL_ADDRESS
 #    define NAVIGATOR_TRACKBALL_ADDRESS 0x50
