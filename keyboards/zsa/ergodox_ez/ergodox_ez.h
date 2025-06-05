@@ -63,17 +63,12 @@ void ergodox_led_all_set(uint8_t n);
 #    define LED_BRIGHTNESS_HI 255
 #endif
 
-enum ergodox_ez_keycodes {
-    LED_LEVEL = QK_KB,
-    TOGGLE_LAYER_COLOR,
-    EZ_SAFE_RANGE
-};
-
 typedef union {
     uint32_t raw;
     struct {
         uint8_t led_level : 3;
         bool    disable_layer_led : 1;
+        uint8_t navigator_cpi : 3;
         bool    placeholder : 1;
     };
 } keyboard_config_t;

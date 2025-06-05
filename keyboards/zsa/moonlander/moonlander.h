@@ -14,9 +14,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-
+ */
 
 #pragma once
 
@@ -34,23 +32,19 @@ extern bool mcp23018_leds[];
 #define STATUS_LED_5(status) mcp23018_leds[1] = (bool)status
 #define STATUS_LED_6(status) mcp23018_leds[2] = (bool)status
 
-enum planck_ez_keycodes {
-    TOGGLE_LAYER_COLOR = QK_KB_0,
-    LED_LEVEL,
-};
-
 #ifndef WEBUSB_ENABLE
 #    define WEBUSB_PAIR KC_NO
 #endif
 
 typedef union {
-  uint32_t raw;
-  struct {
-    bool         disable_layer_led   :1;
-    bool         rgb_matrix_enable   :1;
-    bool         led_level           :1;
-    uint8_t      led_level_res       :2; // DO NOT REMOVE
-  };
+    uint32_t raw;
+    struct {
+        bool    disable_layer_led : 1;
+        bool    rgb_matrix_enable : 1;
+        bool    led_level : 1;
+        uint8_t led_level_res : 2; // DO NOT REMOVE
+        uint8_t navigator_cpi : 3;
+    };
 } keyboard_config_t;
 
 extern keyboard_config_t keyboard_config;

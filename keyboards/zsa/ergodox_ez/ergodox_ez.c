@@ -25,6 +25,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef COMMUNITY_MODULE_ORYX_ENABLE
 #    include "oryx.h"
 #endif // COMMUNITY_MODULE_ORYX_ENABLE
+#ifdef COMMUNITY_MODULE_DEFAULTS_ENABLE
+#     include "defaults.h"
+#endif
 
 keyboard_config_t keyboard_config;
 
