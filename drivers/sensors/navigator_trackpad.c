@@ -6,18 +6,17 @@
 #include "timer.h"
 
 const pointing_device_driver_t navigator_trackpad_pointing_device_driver = {
-    .init       = navigator_trackpad_device_init,
+    .init = navigator_trackpad_device_init,
     .get_report = navigator_trackpad_get_report,
-    .get_cpi    = navigator_trackpad_get_cpi,
-    .set_cpi    = navigator_trackpad_set_cpi
+    .get_cpi = navigator_trackpad_get_cpi,
+    .set_cpi = navigator_trackpad_set_cpi
 };
 
-uint16_t current_cpi = DEFAULT_CPI_TICK;
-uint32_t gpio_offset_addr;
-uint8_t  has_motion      = 0;
-uint8_t  scroll_debounce = 0;
-
-bool touchpad_init;
+uint16_t    current_cpi = DEFAULT_CPI_TICK;
+uint32_t    gpio_offset_addr;
+uint8_t     has_motion = 0;
+extern bool set_scrolling;
+bool        touchpad_init;
 
 #if defined(NAVIGATOR_TRACKPAD_PTP_MODE)
 cgen6_report_t ptp_report;
@@ -346,14 +345,13 @@ report_mouse_t navigator_trackpad_get_report(report_mouse_t mouse_report) {
 #endif
 #if defined(NAVIGATOR_TRACKPAD_PTP_MODE)
     if (!prev_ptp_flag && ptp_report.tip) { // Beginning of a motion
-        prev_ptp_x      = ptp_report.x;
-        prev_ptp_y      = ptp_report.y;
-        prev_ptp_flag   = true;
-        tap_timer       = timer_read();
-        scroll_debounce = 1;
+        prev_ptp_x    = ptp_report.x;
+        prev_ptp_y    = ptp_report.y;
+        prev_ptp_flag = true;
+        tap_timer     = timer_read();
     } else if (!ptp_report.tip) { // End of a motion
         prev_ptp_flag = false;
-        if (timer_elapsed(tap_timer) < NAVIGATOR_TRACKPAD_TAPPING_TERM) { // Register a tap or double tap
+        if (timer_elapsed(tap_timer) < NAVIGATOR_TRACKPAD_TAPPING_TERM && set_scrolling == false) { // Register a tap or double tap
             if (last_contact_count > 0) {
 #    ifdef NAVIGATOR_TRACKPAD_ENABLE_DOUBLE_TAP
                 mouse_report.buttons = pointing_device_handle_buttons(mouse_report.buttons, true, POINTING_DEVICE_BUTTON2);
@@ -365,45 +363,18 @@ report_mouse_t navigator_trackpad_get_report(report_mouse_t mouse_report) {
             }
             prev_tap_clear = true;
         }
+        set_scrolling = false;
     } else {
         if (timer_elapsed(tap_timer) >= NAVIGATOR_TRACKPAD_TAP_DEBOUNCE) {
             ptp_delta_x = ptp_report.x - prev_ptp_x;
             ptp_delta_y = ptp_report.y - prev_ptp_y;
+
             if (ptp_report.contact_count > 0) { // More than one finger, return scroll motions
-                if (scroll_debounce == 0) {
-                    scroll_debounce = 1;
-                    if (ptp_delta_y && abs(ptp_delta_y) > abs(ptp_delta_x)) {
-                        uint8_t scroll_v;
-                        if (ptp_delta_y > 0) {
-                            scroll_v = 1;
-                        } else {
-                            scroll_v = -1;
-                        }
-#    ifdef NAVIGATOR_SCROLL_INVERT
-                        mouse_report.v = (int8_t)(scroll_v);
-#    else
-                        mouse_report.v = (int8_t)(-scroll_v);
-#    endif
-                    }
-                    if (ptp_delta_x && abs(ptp_delta_x) > abs(ptp_delta_y)) {
-                        if (ptp_delta_x > 0) {
-                            mouse_report.h = 1;
-                        } else {
-                            mouse_report.h = -1;
-                        }
-                    }
-                    mouse_report.x = 0;
-                    mouse_report.y = 0;
-                } else {
-                    scroll_debounce++;
-                    if (scroll_debounce > NAVIGATOR_TRACKPAD_SCROLL_DEBOUNCE) {
-                        scroll_debounce = 0;
-                    }
-                }
-            } else {
-                mouse_report.x = ptp_delta_x;
-                mouse_report.y = ptp_delta_y;
+                set_scrolling = true;
             }
+
+            mouse_report.x = ptp_delta_x;
+            mouse_report.y = ptp_delta_y;
 
             prev_ptp_x = ptp_report.x;
             prev_ptp_y = ptp_report.y;

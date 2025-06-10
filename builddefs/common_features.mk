@@ -159,8 +159,10 @@ ifeq ($(strip $(POINTING_DEVICE_ENABLE)), yes)
             I2C_DRIVER_REQUIRED = yes
         else ifeq ($(strip $(POINTING_DEVICE_DRIVER)), navigator_trackball)
             I2C_DRIVER_REQUIRED = yes
+            SRC += drivers/sensors/navigator.c
         else ifeq ($(strip $(POINTING_DEVICE_DRIVER)), navigator_trackpad)
             I2C_DRIVER_REQUIRED = yes
+            SRC += drivers/sensors/navigator.c
         else ifneq ($(filter $(strip $(POINTING_DEVICE_DRIVER)),pmw3360 pmw3389),)
             SPI_DRIVER_REQUIRED = yes
             SRC += drivers/sensors/pmw33xx_common.c
