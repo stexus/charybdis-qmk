@@ -1,16 +1,13 @@
 #include <stdint.h>
 #include <sys/types.h>
+#include <math.h>
 #include "navigator_trackpad.h"
 #include "i2c_master.h"
 #include "quantum.h"
 #include "timer.h"
 
-const pointing_device_driver_t navigator_trackpad_pointing_device_driver = {
-    .init = navigator_trackpad_device_init,
-    .get_report = navigator_trackpad_get_report,
-    .get_cpi = navigator_trackpad_get_cpi,
-    .set_cpi = navigator_trackpad_set_cpi
-};
+
+const pointing_device_driver_t navigator_trackpad_pointing_device_driver = {.init = navigator_trackpad_device_init, .get_report = navigator_trackpad_get_report, .get_cpi = navigator_trackpad_get_cpi, .set_cpi = navigator_trackpad_set_cpi};
 
 uint16_t    current_cpi = DEFAULT_CPI_TICK;
 uint32_t    gpio_offset_addr;
@@ -251,6 +248,20 @@ uint32_t cirque_gen_6_read_callback(uint32_t trigger_time, void *cb_arg) {
     return NAVIGATOR_TRACKPAD_READ;
 }
 
+void dump_ptp_report(void) {
+#if defined(NAVIGATOR_TRACKPAD_PTP_MODE)
+    printf("PTP Report:\n");
+    printf("  X: %d\n", ptp_report.x);
+    printf("  Y: %d\n", ptp_report.y);
+    printf("  Timestamp: %d\n", ptp_report.ts);
+    printf("  ID: %d\n", ptp_report.id);
+    printf("  Confidence: %d\n", ptp_report.confidence);
+    printf("  Tip: %d\n", ptp_report.tip);
+    printf("  Contact Count: %d\n", ptp_report.contact_count);
+    printf("  Buttons: %d\n", ptp_report.buttons);
+#endif
+}
+
 void navigator_trackpad_device_init(void) {
     i2c_init();
 
@@ -351,12 +362,15 @@ report_mouse_t navigator_trackpad_get_report(report_mouse_t mouse_report) {
         tap_timer     = timer_read();
     } else if (!ptp_report.tip) { // End of a motion
         prev_ptp_flag = false;
+        printf("Delta X: %d, Delta Y: %d\n", ptp_delta_x, ptp_delta_y);
         if (timer_elapsed(tap_timer) < NAVIGATOR_TRACKPAD_TAPPING_TERM && set_scrolling == false) { // Register a tap or double tap
             if (last_contact_count > 0) {
+                print("Double tap detected\n");
 #    ifdef NAVIGATOR_TRACKPAD_ENABLE_DOUBLE_TAP
                 mouse_report.buttons = pointing_device_handle_buttons(mouse_report.buttons, true, POINTING_DEVICE_BUTTON2);
 #    endif
             } else {
+                print("Single tap detected\n");
 #    ifdef NAVIGATOR_TRACKPAD_ENABLE_TAP
                 mouse_report.buttons = pointing_device_handle_buttons(mouse_report.buttons, true, POINTING_DEVICE_BUTTON1);
 #    endif
@@ -365,16 +379,24 @@ report_mouse_t navigator_trackpad_get_report(report_mouse_t mouse_report) {
         }
         set_scrolling = false;
     } else {
-        if (timer_elapsed(tap_timer) >= NAVIGATOR_TRACKPAD_TAP_DEBOUNCE) {
-            ptp_delta_x = ptp_report.x - prev_ptp_x;
-            ptp_delta_y = ptp_report.y - prev_ptp_y;
+        ptp_delta_x = ptp_report.x - prev_ptp_x;
+        ptp_delta_y = ptp_report.y - prev_ptp_y;
 
+        if (timer_elapsed(tap_timer) >= NAVIGATOR_TRACKPAD_TAP_DEBOUNCE) {
             if (ptp_report.contact_count > 0) { // More than one finger, return scroll motions
                 set_scrolling = true;
             }
 
-            mouse_report.x = ptp_delta_x;
-            mouse_report.y = ptp_delta_y;
+            if (ptp_delta_x < 0) {
+                mouse_report.x = -powf(-ptp_delta_x, 1.2);
+            } else {
+                mouse_report.x = powf(ptp_delta_x, 1.2);
+            }
+            if (ptp_delta_y < 0) {
+                mouse_report.y = -powf(-ptp_delta_y, 1.2);
+            } else {
+                mouse_report.y = powf(ptp_delta_y, 1.2);
+            }
 
             prev_ptp_x = ptp_report.x;
             prev_ptp_y = ptp_report.y;

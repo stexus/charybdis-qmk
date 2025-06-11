@@ -24,12 +24,8 @@
 #    endif
 
 #define NAVIGATOR_TRACKPAD_READ 7
-#define NAVIGATOR_TRACKPAD_TAPPING_TERM 200
+#define NAVIGATOR_TRACKPAD_TAPPING_TERM 100
 #define NAVIGATOR_TRACKPAD_TAP_DEBOUNCE 100
-#ifndef NAVIGATOR_TRACKPAD_SCROLL_DEBOUNCE
-// The scroll debounce is the number of read cycles it takes to register a scroll event. Each read cycle is set to #NAVIGATOR_TRACKPAD_READ
-#define NAVIGATOR_TRACKPAD_SCROLL_DEBOUNCE 3
-#endif
 
 #ifndef NAVIGATOR_TRACKPAD_ADDRESS
 #    define NAVIGATOR_TRACKPAD_ADDRESS 0x58
