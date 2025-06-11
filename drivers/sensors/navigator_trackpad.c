@@ -6,13 +6,13 @@
 #include "quantum.h"
 #include "timer.h"
 
-
 const pointing_device_driver_t navigator_trackpad_pointing_device_driver = {.init = navigator_trackpad_device_init, .get_report = navigator_trackpad_get_report, .get_cpi = navigator_trackpad_get_cpi, .set_cpi = navigator_trackpad_set_cpi};
 
 uint16_t    current_cpi = DEFAULT_CPI_TICK;
 uint32_t    gpio_offset_addr;
 uint8_t     has_motion = 0;
 extern bool set_scrolling;
+bool        in_motion;
 bool        touchpad_init;
 
 #if defined(NAVIGATOR_TRACKPAD_PTP_MODE)
@@ -360,10 +360,10 @@ report_mouse_t navigator_trackpad_get_report(report_mouse_t mouse_report) {
         prev_ptp_y    = ptp_report.y;
         prev_ptp_flag = true;
         tap_timer     = timer_read();
+        in_motion     = false;
     } else if (!ptp_report.tip) { // End of a motion
         prev_ptp_flag = false;
-        printf("Delta X: %d, Delta Y: %d\n", ptp_delta_x, ptp_delta_y);
-        if (timer_elapsed(tap_timer) < NAVIGATOR_TRACKPAD_TAPPING_TERM && set_scrolling == false) { // Register a tap or double tap
+        if (in_motion == false) { // Register a tap or double tap
             if (last_contact_count > 0) {
                 print("Double tap detected\n");
 #    ifdef NAVIGATOR_TRACKPAD_ENABLE_DOUBLE_TAP
@@ -400,6 +400,8 @@ report_mouse_t navigator_trackpad_get_report(report_mouse_t mouse_report) {
 
             prev_ptp_x = ptp_report.x;
             prev_ptp_y = ptp_report.y;
+
+            in_motion = true;
         }
         last_contact_count = ptp_report.contact_count;
     }
