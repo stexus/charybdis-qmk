@@ -18,7 +18,7 @@
 #pragma once
 
 /* Handedness. */
-#define MASTER_RIGHT
+// #define MASTER_RIGHT
 
 // To use the handedness pin, resistors need to be installed on the adapter PCB.
 // If so, uncomment the following code, and undefine MASTER_RIGHT above.
@@ -34,5 +34,8 @@
 
 /* Reset. */
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET
-#define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_LED GP17
+// #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_LED GP17
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_TIMEOUT 1000U
+#define SPLIT_HAND_PIN GP15  //上下拉定义引脚，一般用的是GP29
+#define SPLIT_HAND_PIN_LOW_IS_LEFT // High -> right, Low -> left.    //上拉为右手，下拉为左手
+#define USB_VBUS_PIN GP19

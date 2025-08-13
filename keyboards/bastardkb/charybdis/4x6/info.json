@@ -2,8 +2,8 @@
     "manufacturer": "Bastard Keyboards",
     "url": "https://bastardkb.com/charybdis",
     "usb": {
-        "pid": "0x1833",
-        "vid": "0xA8F8"
+        "pid": "0x1323",
+        "vid": "0x5773"
     },
     "rgb_matrix": {
         "split_count": [29, 29]
@@ -70,17 +70,17 @@
                 {"matrix": [8, 1], "x": 15, "y": 3},
                 {"matrix": [8, 0], "x": 16, "y": 3},
 
-                {"matrix": [4, 3], "x": 5, "y": 4},
-                {"matrix": [4, 4], "x": 6, "y": 4},
-                {"matrix": [4, 1], "x": 7, "y": 4},
+                {"matrix": [4, 2], "x": 5, "y": 4},
+                {"matrix": [4, 3], "x": 6, "y": 4},
+                {"matrix": [4, 4], "x": 7, "y": 4},
 
-                {"matrix": [9, 1], "x": 9, "y": 4},
+                {"matrix": [9, 4], "x": 9, "y": 4},
                 {"matrix": [9, 3], "x": 10, "y": 4},
 
-                {"matrix": [4, 5], "x": 6, "y": 5},
-                {"matrix": [4, 2], "x": 7, "y": 5},
+                {"matrix": [4, 0], "x": 6, "y": 5},
+                {"matrix": [4, 1], "x": 7, "y": 5},
 
-                {"matrix": [9, 5], "x": 9, "y": 5}
+                {"matrix": [9, 1], "x": 9, "y": 5}
             ]
         }
     }
