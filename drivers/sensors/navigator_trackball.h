@@ -1,3 +1,6 @@
+// Copyright 2025 ZSA Technology Labs, Inc <contact@zsa.io>
+// SPDX-License-Identifier: GPL-2.0-or-later
+
 #pragma once
 #include <stdint.h>
 #include <stdbool.h>
@@ -25,7 +28,6 @@
 #define SCI18IS606_GET_ID 0xFE
 
 #define WRITE_REG_BIT 0x80
-
 /*
 The PAW3805EK datasheet suggests the following CPI values for the X and Y axes:
 CPI    X-axis  Y-axis

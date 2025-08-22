@@ -1,3 +1,6 @@
+// Copyright 2025 ZSA Technology Labs, Inc <contact@zsa.io>
+// SPDX-License-Identifier: GPL-2.0-or-later
+
 #include <stdint.h>
 #include <sys/types.h>
 #include <math.h>

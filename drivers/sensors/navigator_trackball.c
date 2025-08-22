@@ -1,3 +1,11 @@
+// Copyright 2025 ZSA Technology Labs, Inc <contact@zsa.io>
+// SPDX-License-Identifier: GPL-2.0-or-later
+
+// This is the QMK driver for the Navigator Trackball. It is comprised of two ICs:
+// 1. The sci18is606 is a i2c to spi bridge that converts the i2c protocol to the spi protocol. It allows the trackball to
+// be plugged using the TRRS jack used by ZSA keyboards or any other split keyboard.
+// 2. The paw3805ek is a high-speed motion detection sensor. It is used to detect the motion of the trackball.
+
 #include "i2c_master.h"
 #include "navigator_trackball.h"
 #include <stdint.h>
@@ -19,6 +27,7 @@ uint8_t trackball_init = 0;
 
 deferred_token callback_token = 0;
 
+// The sequence of commands to configure and boot the paw3805ek sensor.
 paw3805ek_reg_seq_t paw3805ek_configure_seq[] = {
     {0x06, 0x80},                 // Software reset
     {0x00, 0x00},                 // Request the sensor ID
@@ -32,14 +41,17 @@ paw3805ek_reg_seq_t paw3805ek_configure_seq[] = {
     {0x09 | WRITE_REG_BIT, 0x00}, // Enable the write protection
 };
 
+// A wrapper function for i2c_transmit that adds the address of the bridge chip to the data.
 i2c_status_t sci18is606_write(uint8_t *data, uint8_t length) {
     return i2c_transmit(NAVIGATOR_TRACKBALL_ADDRESS, data, length, NAVIGATOR_TRACKBALL_TIMEOUT);
 }
 
+// A wrapper function for i2c_receive that adds the address of the bridge chip to the data.
 i2c_status_t sci18is606_read(uint8_t *data, uint8_t length) {
     return i2c_receive(NAVIGATOR_TRACKBALL_ADDRESS, data, length, NAVIGATOR_TRACKBALL_TIMEOUT);
 }
 
+// A wrapper function that allows to write and optionally read from the bridge chip.
 i2c_status_t sci18is606_spi_tx(uint8_t *data, uint8_t length, bool read) {
     i2c_status_t status = sci18is606_write(data, length);
     wait_us(length * 15);
@@ -53,6 +65,7 @@ i2c_status_t sci18is606_spi_tx(uint8_t *data, uint8_t length, bool read) {
     return status;
 }
 
+// Configure the bridge chip to enable SPI mode.
 i2c_status_t sci18is606_configure(void) {
     uint8_t      spi_conf[2] = {SCI18IS606_CONF_SPI, SCI18IS606_CONF};
     i2c_status_t status      = sci18is606_write(spi_conf, 2);
@@ -119,6 +132,7 @@ bool paw3805ek_set_cpi(void) {
         {0x09 | WRITE_REG_BIT, 0x00}, // Enable the write protection
     };
 
+    // Run the spi sequence to configure the cpi.
     for (uint8_t i = 0; i < sizeof(cpi_reg_seq) / sizeof(paw3805ek_reg_seq_t); i++) {
         uint8_t buf[3];
         buf[0] = NCS_PIN;
@@ -132,6 +146,7 @@ bool paw3805ek_set_cpi(void) {
     return true;
 }
 
+// Run the paw3805ek configuration sequence.
 bool paw3805ek_configure(void) {
     for (uint8_t i = 0; i < sizeof(paw3805ek_configure_seq) / sizeof(paw3805ek_reg_seq_t); i++) {
         uint8_t buf[3];
@@ -153,6 +168,7 @@ bool paw3805ek_configure(void) {
     return true;
 }
 
+// Assert the CS pin to read the motion register.
 bool paw3805ek_has_motion(void) {
     uint8_t motion[3] = {0x01, 0x02, 0x00};
     if (sci18is606_spi_tx(motion, 3, true) != I2C_STATUS_SUCCESS) {
@@ -161,6 +177,7 @@ bool paw3805ek_has_motion(void) {
     return motion[1] & 0x80;
 }
 
+// Read the motion data from the paw3805ek sensor.
 void paw3804ek_read_motion(report_mouse_t *mouse_report) {
 #ifdef MOUSE_EXTENDED_REPORT
     uint8_t delta_x_l[2] = {0x01, 0x03};
@@ -201,6 +218,7 @@ void paw3804ek_read_motion(report_mouse_t *mouse_report) {
 #endif
 }
 
+// Deffered execution callback that periodically checks for motion.
 uint32_t sci18is606_read_callback(uint32_t trigger_time, void *cb_arg) {
     if (!trackball_init) {
         navigator_trackball_device_init();

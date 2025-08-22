@@ -1,3 +1,6 @@
+// Copyright 2025 ZSA Technology Labs, Inc <contact@zsa.io>
+// SPDX-License-Identifier: GPL-2.0-or-later
+
 #pragma once
 #ifndef NAVIGATOR_SCROLL_DIVIDER
     #define NAVIGATOR_SCROLL_DIVIDER 10
