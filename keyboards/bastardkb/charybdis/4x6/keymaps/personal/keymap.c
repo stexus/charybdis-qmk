@@ -34,7 +34,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //        ├─────────────┼────────────────────────┼─────────────────┼─────────────────┼─────────────────────────┼──────────────────────┤   ├───────────────────┼──────────────────────┼─────────────────┼─────────────────┼───────────────────────┼───────────────────┤
 //        │     esc     │    MT(MOD_LCTL, a)     │ MT(MOD_LALT, s) │ MT(MOD_LGUI, d) │     MT(MOD_LSFT, f)     │  LT(LAYER_TMUX, g)   │   │         h         │   MT(MOD_RSFT, j)    │ MT(MOD_RGUI, k) │ MT(MOD_RALT, l) │    MT(MOD_RCTL, ;)    │         '         │
 //        ├─────────────┼────────────────────────┼─────────────────┼─────────────────┼─────────────────────────┼──────────────────────┤   ├───────────────────┼──────────────────────┼─────────────────┼─────────────────┼───────────────────────┼───────────────────┤
-//        │  MOD_LSFT   │           z            │        x        │        c        │ LT(LAYER_DEBUG_SYM, v)  │          b           │   │         n         │ LT(LAYER_SYM_NAV, m) │        ,        │        .        │           /           │     MOD_RSFT      │
+//        │ left_SHIFT  │           z            │        x        │        c        │ LT(LAYER_DEBUG_SYM, v)  │          b           │   │         n         │ LT(LAYER_SYM_NAV, m) │        ,        │        .        │           /           │    rght_SHIFT     │
 //        └─────────────┴────────────────────────┴─────────────────┼─────────────────┼─────────────────────────┼──────────────────────┤   ├───────────────────┼──────────────────────┼─────────────────┴─────────────────┴───────────────────────┴───────────────────┘
 //                                                                 │     CW_TOGG     │ LT(LAYER_NAV_NUM, ent)  │ LT(LAYER_MOUSE, spc) │   │   MO(LAYER_FN)    │         spc          │
 //                                                                 └─────────────────┼─────────────────────────┼──────────────────────┤   ├───────────────────┼──────────────────────┘
@@ -44,31 +44,31 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_CAPS        , KC_1                      , KC_2               , KC_3               , KC_4                        , KC_5                    ,     KC_6              , KC_7                    , KC_8               , KC_9               , KC_0                     , TO(LAYER_ENTHIUM),
       LSFT_T(KC_TAB) , LT(LAYER_OSM_RIGHT, KC_Q) , KC_W               , KC_E               , KC_R                        , KC_T                    ,     KC_Y              , KC_U                    , KC_I               , KC_O               , LT(LAYER_OSM_LEFT, KC_P) , KC_BSPC          ,
       KC_ESC         , MT(MOD_LCTL, KC_A)        , MT(MOD_LALT, KC_S) , MT(MOD_LGUI, KC_D) , MT(MOD_LSFT, KC_F)          , LT(LAYER_TMUX, KC_G)    ,     KC_H              , MT(MOD_RSFT, KC_J)      , MT(MOD_RGUI, KC_K) , MT(MOD_RALT, KC_L) , MT(MOD_RCTL, KC_SCLN)    , KC_QUOT          ,
-      MOD_LSFT       , KC_Z                      , KC_X               , KC_C               , LT(LAYER_DEBUG_SYM, KC_V)   , KC_B                    ,     KC_N              , LT(LAYER_SYM_NAV, KC_M) , KC_COMM            , KC_DOT             , KC_SLSH                  , MOD_RSFT         ,
+      KC_LEFT_SHIFT  , KC_Z                      , KC_X               , KC_C               , LT(LAYER_DEBUG_SYM, KC_V)   , KC_B                    ,     KC_N              , LT(LAYER_SYM_NAV, KC_M) , KC_COMM            , KC_DOT             , KC_SLSH                  , KC_RIGHT_SHIFT   ,
                                                                         CW_TOGG            , LT(LAYER_NAV_NUM, KC_ENTER) , LT(LAYER_MOUSE, KC_SPC) ,     MO(LAYER_FN)      , KC_SPC                                                                                                          ,
                                                                                              LT(LAYER_SYM_NAV, KC_BSPC)  , MO(LAYER_DEBUG_SYM)     ,     MO(LAYER_SYM_NAV)
 ),
 
-//        ┌──────────┬────────────────────────┬─────────────────┬────────────────────────┬─────────────────────────┬──────────────────────┐   ┌───────────────────┬──────────────────────┬─────────────────┬─────────────────┬───────────────────────┬──────────────────┐
-//        │   caps   │           1            │        2        │           3            │            4            │          5           │   │         6         │          7           │        8        │        9        │           0           │ TO(LAYER_QWERTY) │
-//        ├──────────┼────────────────────────┼─────────────────┼────────────────────────┼─────────────────────────┼──────────────────────┤   ├───────────────────┼──────────────────────┼─────────────────┼─────────────────┼───────────────────────┼──────────────────┤
-//        │   tab    │ LT(LAYER_OSM_RIGHT, z) │        y        │           u            │            o            │          ;           │   │         q         │          l           │        d        │        p        │ LT(LAYER_OSM_LEFT, x) │       bspc       │
-//        ├──────────┼────────────────────────┼─────────────────┼────────────────────────┼─────────────────────────┼──────────────────────┤   ├───────────────────┼──────────────────────┼─────────────────┼─────────────────┼───────────────────────┼──────────────────┤
-//        │   esc    │    MT(MOD_LCTL, c)     │ MT(MOD_LALT, i) │    MT(MOD_LGUI, e)     │     MT(MOD_LSFT, a)     │  LT(LAYER_TMUX, ,)   │   │         k         │   MT(MOD_RSFT, h)    │ MT(MOD_RGUI, t) │ MT(MOD_RALT, n) │    MT(MOD_RCTL, s)    │        f         │
-//        ├──────────┼────────────────────────┼─────────────────┼────────────────────────┼─────────────────────────┼──────────────────────┤   ├───────────────────┼──────────────────────┼─────────────────┼─────────────────┼───────────────────────┼──────────────────┤
-//        │ MOD_LSFT │           w            │        -        │           =            │ LT(LAYER_DEBUG_SYM, .)  │          /           │   │         j         │ LT(LAYER_SYM_NAV, m) │        g        │        b        │           v           │     MOD_RSFT     │
-//        └──────────┴────────────────────────┴─────────────────┼────────────────────────┼─────────────────────────┼──────────────────────┤   ├───────────────────┼──────────────────────┼─────────────────┴─────────────────┴───────────────────────┴──────────────────┘
-//                                                              │ LT(LAYER_NAV_NUM, ent) │            r            │ LT(LAYER_MOUSE, spc) │   │   MO(LAYER_FN)    │         spc          │
-//                                                              └────────────────────────┼─────────────────────────┼──────────────────────┤   ├───────────────────┼──────────────────────┘
-//                                                                                       │ LT(LAYER_SYM_NAV, bspc) │ MO(LAYER_DEBUG_SYM)  │   │ MO(LAYER_SYM_NAV) │
-//                                                                                       └─────────────────────────┴──────────────────────┘   └───────────────────┘
+//        ┌────────────┬────────────────────────┬─────────────────┬────────────────────────┬─────────────────────────┬──────────────────────┐   ┌───────────────────┬──────────────────────┬─────────────────┬─────────────────┬───────────────────────┬──────────────────┐
+//        │    caps    │           1            │        2        │           3            │            4            │          5           │   │         6         │          7           │        8        │        9        │           0           │ TO(LAYER_QWERTY) │
+//        ├────────────┼────────────────────────┼─────────────────┼────────────────────────┼─────────────────────────┼──────────────────────┤   ├───────────────────┼──────────────────────┼─────────────────┼─────────────────┼───────────────────────┼──────────────────┤
+//        │    tab     │ LT(LAYER_OSM_RIGHT, z) │        y        │           u            │            o            │          ;           │   │         q         │          l           │        d        │        p        │ LT(LAYER_OSM_LEFT, x) │       bspc       │
+//        ├────────────┼────────────────────────┼─────────────────┼────────────────────────┼─────────────────────────┼──────────────────────┤   ├───────────────────┼──────────────────────┼─────────────────┼─────────────────┼───────────────────────┼──────────────────┤
+//        │    esc     │    MT(MOD_LCTL, c)     │ MT(MOD_LALT, i) │    MT(MOD_LGUI, e)     │     MT(MOD_LSFT, a)     │  LT(LAYER_TMUX, ,)   │   │         k         │   MT(MOD_RSFT, h)    │ MT(MOD_RGUI, t) │ MT(MOD_RALT, n) │    MT(MOD_RCTL, s)    │        f         │
+//        ├────────────┼────────────────────────┼─────────────────┼────────────────────────┼─────────────────────────┼──────────────────────┤   ├───────────────────┼──────────────────────┼─────────────────┼─────────────────┼───────────────────────┼──────────────────┤
+//        │ left_SHIFT │           w            │        -        │           =            │ LT(LAYER_DEBUG_SYM, .)  │          /           │   │         j         │ LT(LAYER_SYM_NAV, m) │        g        │        b        │           v           │    rght_SHIFT    │
+//        └────────────┴────────────────────────┴─────────────────┼────────────────────────┼─────────────────────────┼──────────────────────┤   ├───────────────────┼──────────────────────┼─────────────────┴─────────────────┴───────────────────────┴──────────────────┘
+//                                                                │ LT(LAYER_NAV_NUM, ent) │            r            │ LT(LAYER_MOUSE, spc) │   │   MO(LAYER_FN)    │         spc          │
+//                                                                └────────────────────────┼─────────────────────────┼──────────────────────┤   ├───────────────────┼──────────────────────┘
+//                                                                                         │ LT(LAYER_SYM_NAV, bspc) │ MO(LAYER_DEBUG_SYM)  │   │ MO(LAYER_SYM_NAV) │
+//                                                                                         └─────────────────────────┴──────────────────────┘   └───────────────────┘
 [LAYER_ENTHIUM] = LAYOUT(
-      KC_CAPS  , KC_1                      , KC_2               , KC_3                        , KC_4                        , KC_5                     ,     KC_6              , KC_7                    , KC_8               , KC_9               , KC_0                     , TO(LAYER_QWERTY),
-      KC_TAB   , LT(LAYER_OSM_RIGHT, KC_Z) , KC_Y               , KC_U                        , KC_O                        , KC_SCLN                  ,     KC_Q              , KC_L                    , KC_D               , KC_P               , LT(LAYER_OSM_LEFT, KC_X) , KC_BSPC         ,
-      KC_ESC   , MT(MOD_LCTL, KC_C)        , MT(MOD_LALT, KC_I) , MT(MOD_LGUI, KC_E)          , MT(MOD_LSFT, KC_A)          , LT(LAYER_TMUX, KC_COMMA) ,     KC_K              , MT(MOD_RSFT, KC_H)      , MT(MOD_RGUI, KC_T) , MT(MOD_RALT, KC_N) , MT(MOD_RCTL, KC_S)       , KC_F            ,
-      MOD_LSFT , KC_W                      , KC_MINUS           , KC_EQUAL                    , LT(LAYER_DEBUG_SYM, KC_DOT) , KC_SLASH                 ,     KC_J              , LT(LAYER_SYM_NAV, KC_M) , KC_G               , KC_B               , KC_V                     , MOD_RSFT        ,
-                                                                  LT(LAYER_NAV_NUM, KC_ENTER) , KC_R                        , LT(LAYER_MOUSE, KC_SPC)  ,     MO(LAYER_FN)      , KC_SPC                                                                                                         ,
-                                                                                                LT(LAYER_SYM_NAV, KC_BSPC)  , MO(LAYER_DEBUG_SYM)      ,     MO(LAYER_SYM_NAV)
+      KC_CAPS       , KC_1                      , KC_2               , KC_3                        , KC_4                        , KC_5                     ,     KC_6              , KC_7                    , KC_8               , KC_9               , KC_0                     , TO(LAYER_QWERTY),
+      KC_TAB        , LT(LAYER_OSM_RIGHT, KC_Z) , KC_Y               , KC_U                        , KC_O                        , KC_SCLN                  ,     KC_Q              , KC_L                    , KC_D               , KC_P               , LT(LAYER_OSM_LEFT, KC_X) , KC_BSPC         ,
+      KC_ESC        , MT(MOD_LCTL, KC_C)        , MT(MOD_LALT, KC_I) , MT(MOD_LGUI, KC_E)          , MT(MOD_LSFT, KC_A)          , LT(LAYER_TMUX, KC_COMMA) ,     KC_K              , MT(MOD_RSFT, KC_H)      , MT(MOD_RGUI, KC_T) , MT(MOD_RALT, KC_N) , MT(MOD_RCTL, KC_S)       , KC_F            ,
+      KC_LEFT_SHIFT , KC_W                      , KC_MINUS           , KC_EQUAL                    , LT(LAYER_DEBUG_SYM, KC_DOT) , KC_SLASH                 ,     KC_J              , LT(LAYER_SYM_NAV, KC_M) , KC_G               , KC_B               , KC_V                     , KC_RIGHT_SHIFT  ,
+                                                                       LT(LAYER_NAV_NUM, KC_ENTER) , KC_R                        , LT(LAYER_MOUSE, KC_SPC)  ,     MO(LAYER_FN)      , KC_SPC                                                                                                         ,
+                                                                                                     LT(LAYER_SYM_NAV, KC_BSPC)  , MO(LAYER_DEBUG_SYM)      ,     MO(LAYER_SYM_NAV)
 ),
 
 //        ┌───────────────┬─────────────────┬─────────────┬─────────────┬─────────────┬───────────────┐   ┌─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────┐
@@ -281,11 +281,12 @@ const uint16_t PROGMEM lscln_combo[] = {MT(MOD_RALT, KC_L), MT(MOD_RCTL, KC_SCLN
 const uint16_t PROGMEM ui_combo[]    = {KC_U, KC_I, COMBO_END};
 const uint16_t PROGMEM df_combo[]    = {LGUI_T(KC_D), LSFT_T(KC_F), COMBO_END};
 const uint16_t PROGMEM sf_combo[]    = {LALT_T(KC_S), LSFT_T(KC_F), COMBO_END};
+const uint16_t PROGMEM sdf_combo[]   = {LALT_T(KC_S), LGUI_T(KC_D), LSFT_T(KC_F), COMBO_END};
 const uint16_t PROGMEM we_combo[]    = {KC_W, KC_E, COMBO_END};
 combo_t                key_combos[]  = {
 
-    COMBO(sd_combo, VIM_SAVE),   COMBO(kl_combo, KC_ENT),   COMBO(jk_combo, KC_LPRN),       COMBO(jl_combo, KC_RPRN), COMBO(jscln_combo, KC_PERC),
-    COMBO(lscln_combo, KC_COLN), COMBO(df_combo, KC_EQUAL), COMBO(sf_combo, KC_UNDERSCORE), COMBO(we_combo, KC_MINUS)
+    COMBO(sd_combo, VIM_SAVE), COMBO(kl_combo, KC_ENT),        COMBO(jk_combo, KC_LPRN),  COMBO(jl_combo, KC_RPRN), COMBO(jscln_combo, KC_PERC), COMBO(lscln_combo, KC_COLN),
+    COMBO(df_combo, KC_EQUAL), COMBO(sf_combo, KC_UNDERSCORE), COMBO(we_combo, KC_MINUS), COMBO(sdf_combo, CW_TOGG)
 
 };
 bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
