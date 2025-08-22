@@ -166,7 +166,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //        ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────────┼─────────────┼───────────────┼─────────────┼─────────────┤
 //        │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │   │ tRANSPARENT │      mprv       │    mply     │     mnxt      │ tRANSPARENT │ tRANSPARENT │
 //        ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────────┼─────────────┼───────────────┼─────────────┼─────────────┤
-//        │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │   │ tRANSPARENT │      vold       │    mute     │     volu      │ tRANSPARENT │ tRANSPARENT │
+//        │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │   │ tRANSPARENT │      vold       │    mute     │     volu      │ tRANSPARENT │   QK_BOOT   │
 //        └─────────────┴─────────────┴─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────────┼─────────────┴───────────────┴─────────────┴─────────────┘
 //                                                  │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │   │ tRANSPARENT │   tRANSPARENT   │
 //                                                  └─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────────┘
@@ -176,7 +176,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_F12         , KC_F1          , KC_F2          , KC_F3          , KC_F4          , KC_F5          ,     KC_F6          , KC_F7              , KC_F8          , KC_F9            , KC_F10         , KC_F11        ,
       KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_BRIGHTNESS_DOWN , KC_TRANSPARENT , KC_BRIGHTNESS_UP , KC_TRANSPARENT , KC_TRANSPARENT,
       KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_MPRV            , KC_MPLY        , KC_MNXT          , KC_TRANSPARENT , KC_TRANSPARENT,
-      KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_VOLD            , KC_MUTE        , KC_VOLU          , KC_TRANSPARENT , KC_TRANSPARENT,
+      KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_VOLD            , KC_MUTE        , KC_VOLU          , KC_TRANSPARENT , QK_BOOT       ,
                                                          KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT                                                                          ,
                                                                           KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT
 ),
@@ -188,7 +188,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //        ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
 //        │ tRANSPARENT │    btn2     │   DRGSCRL   │   SNIPING   │    btn1     │ tRANSPARENT │   │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │
 //        ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-//        │ tRANSPARENT │ tRANSPARENT │  DPI_RMOD   │   DPI_MOD   │ tRANSPARENT │ tRANSPARENT │   │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │
+//        │   QK_BOOT   │ tRANSPARENT │  DPI_RMOD   │   DPI_MOD   │ tRANSPARENT │ tRANSPARENT │   │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │
 //        └─────────────┴─────────────┴─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┴─────────────┴─────────────┴─────────────┘
 //                                                  │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │   │ tRANSPARENT │ tRANSPARENT │
 //                                                  └─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┘
@@ -198,7 +198,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT,
       KC_TRANSPARENT , KC_TRANSPARENT , S_D_RMOD       , S_D_MOD        , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT,
       KC_TRANSPARENT , KC_BTN2        , DRGSCRL        , SNIPING        , KC_BTN1        , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT,
-      KC_TRANSPARENT , KC_TRANSPARENT , DPI_RMOD       , DPI_MOD        , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT,
+      QK_BOOT        , KC_TRANSPARENT , DPI_RMOD       , DPI_MOD        , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT,
                                                          KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT                                                                    ,
                                                                           KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT
 ),
