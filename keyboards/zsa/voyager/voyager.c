@@ -8,8 +8,8 @@
 #    include "oryx.h"
 #endif // COMMUNITY_MODULE_ORYX_ENABLE
 #ifdef COMMUNITY_MODULE_DEFAULTS_ENABLE
-#    include "defaults.h"
-#endif // COMMUNITY_MODULE_ORYX_ENABLE
+#     include "defaults.h"
+#endif
 
 keyboard_config_t keyboard_config;
 

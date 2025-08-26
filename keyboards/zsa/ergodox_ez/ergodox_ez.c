@@ -317,14 +317,12 @@ bool dynamic_macro_record_start_kb(int8_t direction) {
     is_dynamic_recording = true;
     dynamic_loop_timer   = timer_read();
     ergodox_right_led_1_on();
-
     return true;
 }
 
 bool dynamic_macro_record_end_kb(int8_t direction) {
     is_dynamic_recording = false;
     layer_state_set_user(layer_state);
-
     return true;
 }
 #endif
