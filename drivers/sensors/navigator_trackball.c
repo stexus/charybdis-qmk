@@ -192,6 +192,7 @@ void navigator_trackball_device_init(void) {
     }
 
     trackball_init = 1;
+    restore_cpi(current_cpi);
     if (!callback_token) {
         // Register the callback to read the trackball motion
         callback_token = defer_exec(NAVIGATOR_TRACKBALL_READ, sci18is606_read_callback, NULL);
@@ -217,20 +218,17 @@ uint16_t navigator_trackball_get_cpi(void) {
 void restore_cpi(uint8_t cpi) {
     current_cpi = cpi;
     paw3805ek_set_cpi();
-    printf("restored cpi: %d\n", current_cpi);
 }
 
 void navigator_trackball_set_cpi(uint16_t cpi) {
     if (cpi == 0) { // Decrease one tick
         if (current_cpi > NAVIGATOR_TRACKBALL_CPI_TICK) {
             current_cpi -= NAVIGATOR_TRACKBALL_CPI_TICK;
-            printf("decreased cpi: %d\n", current_cpi);
             paw3805ek_set_cpi();
         }
     } else {
-        if (current_cpi < 255 - NAVIGATOR_TRACKBALL_CPI_TICK) {
+        if (current_cpi <= NAVIGATOR_TRACKBALL_CPI_MAX - NAVIGATOR_TRACKBALL_CPI_TICK) {
             current_cpi += NAVIGATOR_TRACKBALL_CPI_TICK;
-            printf("increased cpi: %d\n", current_cpi);
             paw3805ek_set_cpi();
         }
     }
