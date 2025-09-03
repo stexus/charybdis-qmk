@@ -28,3 +28,6 @@
 [submodule "modules/zsa"]
 	path = modules/zsa
 	url = https://github.com/zsa/qmk_modules.git
+[submodule "modules/jgandert"]
+	path = modules/jgandert
+	url = https://github.com/jgandert/qmk_modules.git
