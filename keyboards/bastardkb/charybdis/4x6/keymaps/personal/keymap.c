@@ -14,61 +14,62 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "charybdis.h"
 #include "keycodes.h"
 #include "keymap_us.h"
 #include "modifiers.h"
 #include QMK_KEYBOARD_H
 
-enum charybdis_keymap_layers { LAYER_QWERTY = 0, LAYER_NAV_NUM, LAYER_SYM_NAV, LAYER_DEBUG_SYM, LAYER_MOUSE, LAYER_TMUX, LAYER_FN, LAYER_OSM_RIGHT, LAYER_OSM_LEFT, LAYER_ENTHIUM };
-enum custom_keycodes { TMUX_SPLIT_H = SAFE_RANGE, TMUX_SPLIT_V, TMUX_NEXT_WIN, TMUX_PREV_WIN, TMUX_COPY_MODE, TMUX_CLOSE_PANE, TMUX_CLOSE_WIN, TMUX_PREV_SESH, TMUX_NEXT_SESH, TMUX_NEW_WIN, TMUX_MOVE_WIN_LEFT, TMUX_MOVE_WIN_RIGHT, TMUX_MOVE_PANE_LEFT, TMUX_MOVE_PANE_RIGHT, NEXT_ERR, PREV_ERR, VIM_SAVE };
+enum charybdis_keymap_layers { LAYER_QWERTY = 0, LAYER_NAV_NUM, LAYER_SYM_NAV, LAYER_DEBUG_SYM, LAYER_MOUSE, LAYER_MOUSE_AUTO, LAYER_TMUX, LAYER_FN, LAYER_OSM_RIGHT, LAYER_OSM_LEFT, LAYER_ENTHIUM };
+enum custom_keycodes { TMUX_SPLIT_H = SAFE_RANGE, TMUX_SPLIT_V, TMUX_NEXT_WIN, TMUX_PREV_WIN, TMUX_COPY_MODE, TMUX_CLOSE_PANE, TMUX_CLOSE_WIN, TMUX_PREV_SESH, TMUX_NEXT_SESH, TMUX_NEW_WIN, TMUX_MOVE_WIN_LEFT, TMUX_MOVE_WIN_RIGHT, TMUX_MOVE_PANE_LEFT, TMUX_MOVE_PANE_RIGHT, NEXT_ERR, PREV_ERR, VIM_SAVE, QUOTE_NEW_LINE };
 
 #define LOWER MO(LAYER_LOWER)
 #define RAISE MO(LAYER_RAISE)
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-//        ┌─────────────┬────────────────────────┬─────────────────┬─────────────────┬─────────────────────────┬──────────────────────┐   ┌───────────────────┬──────────────────────┬─────────────────┬─────────────────┬───────────────────────┬───────────────────┐
-//        │    caps     │           1            │        2        │        3        │            4            │          5           │   │         6         │          7           │        8        │        9        │           0           │ TO(LAYER_ENTHIUM) │
-//        ├─────────────┼────────────────────────┼─────────────────┼─────────────────┼─────────────────────────┼──────────────────────┤   ├───────────────────┼──────────────────────┼─────────────────┼─────────────────┼───────────────────────┼───────────────────┤
-//        │ LSFT_T(tab) │ LT(LAYER_OSM_RIGHT, q) │        w        │        e        │            r            │          t           │   │         y         │          u           │        i        │        o        │ LT(LAYER_OSM_LEFT, p) │       bspc        │
-//        ├─────────────┼────────────────────────┼─────────────────┼─────────────────┼─────────────────────────┼──────────────────────┤   ├───────────────────┼──────────────────────┼─────────────────┼─────────────────┼───────────────────────┼───────────────────┤
-//        │     esc     │    MT(MOD_LCTL, a)     │ MT(MOD_LALT, s) │ MT(MOD_LGUI, d) │     MT(MOD_LSFT, f)     │  LT(LAYER_TMUX, g)   │   │         h         │   MT(MOD_RSFT, j)    │ MT(MOD_RGUI, k) │ MT(MOD_RALT, l) │    MT(MOD_RCTL, ;)    │         '         │
-//        ├─────────────┼────────────────────────┼─────────────────┼─────────────────┼─────────────────────────┼──────────────────────┤   ├───────────────────┼──────────────────────┼─────────────────┼─────────────────┼───────────────────────┼───────────────────┤
-//        │ left_SHIFT  │           z            │        x        │        c        │ LT(LAYER_DEBUG_SYM, v)  │          b           │   │         n         │ LT(LAYER_SYM_NAV, m) │        ,        │        .        │           /           │    rght_SHIFT     │
-//        └─────────────┴────────────────────────┴─────────────────┼─────────────────┼─────────────────────────┼──────────────────────┤   ├───────────────────┼──────────────────────┼─────────────────┴─────────────────┴───────────────────────┴───────────────────┘
-//                                                                 │     CW_TOGG     │ LT(LAYER_NAV_NUM, ent)  │ LT(LAYER_MOUSE, spc) │   │   MO(LAYER_FN)    │         spc          │
-//                                                                 └─────────────────┼─────────────────────────┼──────────────────────┤   ├───────────────────┼──────────────────────┘
-//                                                                                   │ LT(LAYER_SYM_NAV, bspc) │ MO(LAYER_DEBUG_SYM)  │   │ MO(LAYER_SYM_NAV) │
-//                                                                                   └─────────────────────────┴──────────────────────┘   └───────────────────┘
+//        ┌─────────┬────────────────────────┬─────────────────┬──────────────────────┬────────────────────────┬───────────────────┐   ┌───────────────────┬──────────────────────┬─────────────────┬─────────────────┬───────────────────────┬───────────────────┐
+//        │  caps   │           1            │        2        │          3           │           4            │         5         │   │         6         │          7           │        8        │        9        │           0           │ DF(LAYER_ENTHIUM) │
+//        ├─────────┼────────────────────────┼─────────────────┼──────────────────────┼────────────────────────┼───────────────────┤   ├───────────────────┼──────────────────────┼─────────────────┼─────────────────┼───────────────────────┼───────────────────┤
+//        │   tab   │ LT(LAYER_OSM_RIGHT, q) │        w        │          e           │           r            │         t         │   │         y         │          u           │        i        │        o        │ LT(LAYER_OSM_LEFT, p) │       bspc        │
+//        ├─────────┼────────────────────────┼─────────────────┼──────────────────────┼────────────────────────┼───────────────────┤   ├───────────────────┼──────────────────────┼─────────────────┼─────────────────┼───────────────────────┼───────────────────┤
+//        │   esc   │    MT(MOD_LCTL, a)     │ MT(MOD_LALT, s) │   MT(MOD_LGUI, d)    │    MT(MOD_LSFT, f)     │ LT(LAYER_TMUX, g) │   │         h         │   MT(MOD_RSFT, j)    │ MT(MOD_RGUI, k) │ MT(MOD_RALT, l) │    MT(MOD_RCTL, ;)    │         '         │
+//        ├─────────┼────────────────────────┼─────────────────┼──────────────────────┼────────────────────────┼───────────────────┤   ├───────────────────┼──────────────────────┼─────────────────┼─────────────────┼───────────────────────┼───────────────────┤
+//        │ CW_TOGG │           z            │        x        │          c           │ LT(LAYER_DEBUG_SYM, v) │         b         │   │         n         │ LT(LAYER_SYM_NAV, m) │        ,        │        .        │           /           │       caps        │
+//        └─────────┴────────────────────────┴─────────────────┼──────────────────────┼────────────────────────┼───────────────────┤   ├───────────────────┼──────────────────────┼─────────────────┴─────────────────┴───────────────────────┴───────────────────┘
+//                                                             │ LT(LAYER_MOUSE, spc) │ LT(LAYER_NAV_NUM, ent) │         -         │   │   MO(LAYER_FN)    │         spc          │
+//                                                             └──────────────────────┼────────────────────────┼───────────────────┤   ├───────────────────┼──────────────────────┘
+//                                                                                    │        DRGSCRL         │       btn1        │   │ MO(LAYER_SYM_NAV) │
+//                                                                                    └────────────────────────┴───────────────────┘   └───────────────────┘
 [LAYER_QWERTY] = LAYOUT(
-      KC_CAPS        , KC_1                      , KC_2               , KC_3               , KC_4                        , KC_5                    ,     KC_6              , KC_7                    , KC_8               , KC_9               , KC_0                     , TO(LAYER_ENTHIUM),
-      LSFT_T(KC_TAB) , LT(LAYER_OSM_RIGHT, KC_Q) , KC_W               , KC_E               , KC_R                        , KC_T                    ,     KC_Y              , KC_U                    , KC_I               , KC_O               , LT(LAYER_OSM_LEFT, KC_P) , KC_BSPC          ,
-      KC_ESC         , MT(MOD_LCTL, KC_A)        , MT(MOD_LALT, KC_S) , MT(MOD_LGUI, KC_D) , MT(MOD_LSFT, KC_F)          , LT(LAYER_TMUX, KC_G)    ,     KC_H              , MT(MOD_RSFT, KC_J)      , MT(MOD_RGUI, KC_K) , MT(MOD_RALT, KC_L) , MT(MOD_RCTL, KC_SCLN)    , KC_QUOT          ,
-      KC_LEFT_SHIFT  , KC_Z                      , KC_X               , KC_C               , LT(LAYER_DEBUG_SYM, KC_V)   , KC_B                    ,     KC_N              , LT(LAYER_SYM_NAV, KC_M) , KC_COMM            , KC_DOT             , KC_SLSH                  , KC_RIGHT_SHIFT   ,
-                                                                        CW_TOGG            , LT(LAYER_NAV_NUM, KC_ENTER) , LT(LAYER_MOUSE, KC_SPC) ,     MO(LAYER_FN)      , KC_SPC                                                                                                          ,
-                                                                                             LT(LAYER_SYM_NAV, KC_BSPC)  , MO(LAYER_DEBUG_SYM)     ,     MO(LAYER_SYM_NAV)
+      KC_CAPS , KC_1                      , KC_2               , KC_3                    , KC_4                        , KC_5                 ,     KC_6              , KC_7                    , KC_8               , KC_9               , KC_0                     , DF(LAYER_ENTHIUM),
+      KC_TAB  , LT(LAYER_OSM_RIGHT, KC_Q) , KC_W               , KC_E                    , KC_R                        , KC_T                 ,     KC_Y              , KC_U                    , KC_I               , KC_O               , LT(LAYER_OSM_LEFT, KC_P) , KC_BSPC          ,
+      KC_ESC  , MT(MOD_LCTL, KC_A)        , MT(MOD_LALT, KC_S) , MT(MOD_LGUI, KC_D)      , MT(MOD_LSFT, KC_F)          , LT(LAYER_TMUX, KC_G) ,     KC_H              , MT(MOD_RSFT, KC_J)      , MT(MOD_RGUI, KC_K) , MT(MOD_RALT, KC_L) , MT(MOD_RCTL, KC_SCLN)    , KC_QUOT          ,
+      CW_TOGG , KC_Z                      , KC_X               , KC_C                    , LT(LAYER_DEBUG_SYM, KC_V)   , KC_B                 ,     KC_N              , LT(LAYER_SYM_NAV, KC_M) , KC_COMM            , KC_DOT             , KC_SLSH                  , KC_CAPS          ,
+                                                                 LT(LAYER_MOUSE, KC_SPC) , LT(LAYER_NAV_NUM, KC_ENTER) , KC_MINUS             ,     MO(LAYER_FN)      , KC_SPC                                                                                                          ,
+                                                                                           DRGSCRL                     , KC_BTN1              ,     MO(LAYER_SYM_NAV)
 ),
 
-//        ┌────────────┬────────────────────────┬─────────────────┬────────────────────────┬─────────────────────────┬──────────────────────┐   ┌───────────────────┬──────────────────────┬─────────────────┬─────────────────┬───────────────────────┬──────────────────┐
-//        │    caps    │           1            │        2        │           3            │            4            │          5           │   │         6         │          7           │        8        │        9        │           0           │ TO(LAYER_QWERTY) │
-//        ├────────────┼────────────────────────┼─────────────────┼────────────────────────┼─────────────────────────┼──────────────────────┤   ├───────────────────┼──────────────────────┼─────────────────┼─────────────────┼───────────────────────┼──────────────────┤
-//        │    tab     │ LT(LAYER_OSM_RIGHT, z) │        y        │           u            │            o            │          ;           │   │         q         │          l           │        d        │        p        │ LT(LAYER_OSM_LEFT, x) │       bspc       │
-//        ├────────────┼────────────────────────┼─────────────────┼────────────────────────┼─────────────────────────┼──────────────────────┤   ├───────────────────┼──────────────────────┼─────────────────┼─────────────────┼───────────────────────┼──────────────────┤
-//        │    esc     │    MT(MOD_LCTL, c)     │ MT(MOD_LALT, i) │    MT(MOD_LGUI, e)     │     MT(MOD_LSFT, a)     │  LT(LAYER_TMUX, ,)   │   │         k         │   MT(MOD_RSFT, h)    │ MT(MOD_RGUI, t) │ MT(MOD_RALT, n) │    MT(MOD_RCTL, s)    │        f         │
-//        ├────────────┼────────────────────────┼─────────────────┼────────────────────────┼─────────────────────────┼──────────────────────┤   ├───────────────────┼──────────────────────┼─────────────────┼─────────────────┼───────────────────────┼──────────────────┤
-//        │ left_SHIFT │           w            │        -        │           =            │ LT(LAYER_DEBUG_SYM, .)  │          /           │   │         j         │ LT(LAYER_SYM_NAV, m) │        g        │        b        │           v           │    rght_SHIFT    │
-//        └────────────┴────────────────────────┴─────────────────┼────────────────────────┼─────────────────────────┼──────────────────────┤   ├───────────────────┼──────────────────────┼─────────────────┴─────────────────┴───────────────────────┴──────────────────┘
-//                                                                │ LT(LAYER_NAV_NUM, ent) │            r            │ LT(LAYER_MOUSE, spc) │   │   MO(LAYER_FN)    │         spc          │
-//                                                                └────────────────────────┼─────────────────────────┼──────────────────────┤   ├───────────────────┼──────────────────────┘
-//                                                                                         │ LT(LAYER_SYM_NAV, bspc) │ MO(LAYER_DEBUG_SYM)  │   │ MO(LAYER_SYM_NAV) │
-//                                                                                         └─────────────────────────┴──────────────────────┘   └───────────────────┘
+//        ┌─────────┬────────────────────────┬─────────────────┬──────────────────────┬─────────────────┬────────────────────────┐   ┌──────────────────────────────┬─────────────────┬─────────────────┬─────────────────┬───────────────────────┬──────────────────┐
+//        │  caps   │           1            │        2        │          3           │        4        │           5            │   │              6               │        7        │        8        │        9        │           0           │ DF(LAYER_QWERTY) │
+//        ├─────────┼────────────────────────┼─────────────────┼──────────────────────┼─────────────────┼────────────────────────┤   ├──────────────────────────────┼─────────────────┼─────────────────┼─────────────────┼───────────────────────┼──────────────────┤
+//        │   tab   │ LT(LAYER_OSM_RIGHT, v) │        b        │          g           │        m        │           j            │   │              =               │        .        │        /        │        -        │ LT(LAYER_OSM_LEFT, ') │        f         │
+//        ├─────────┼────────────────────────┼─────────────────┼──────────────────────┼─────────────────┼────────────────────────┤   ├──────────────────────────────┼─────────────────┼─────────────────┼─────────────────┼───────────────────────┼──────────────────┤
+//        │   esc   │    MT(MOD_LCTL, s)     │ MT(MOD_LALT, n) │   MT(MOD_LGUI, t)    │ MT(MOD_LSFT, h) │   LT(LAYER_TMUX, k)    │   │              ,               │ MT(MOD_RSFT, a) │ MT(MOD_RGUI, e) │ MT(MOD_RALT, i) │    MT(MOD_RCTL, c)    │        w         │
+//        ├─────────┼────────────────────────┼─────────────────┼──────────────────────┼─────────────────┼────────────────────────┤   ├──────────────────────────────┼─────────────────┼─────────────────┼─────────────────┼───────────────────────┼──────────────────┤
+//        │ CW_TOGG │           x            │        p        │          d           │        l        │           q            │   │          sEMICOLON           │        o        │        u        │        y        │           z           │       caps       │
+//        └─────────┴────────────────────────┴─────────────────┼──────────────────────┼─────────────────┼────────────────────────┤   ├──────────────────────────────┼─────────────────┼─────────────────┴─────────────────┴───────────────────────┴──────────────────┘
+//                                                             │ LT(LAYER_MOUSE, spc) │        r        │ LT(LAYER_NAV_NUM, ent) │   │         MO(LAYER_FN)         │       spc       │
+//                                                             └──────────────────────┼─────────────────┼────────────────────────┤   ├──────────────────────────────┼─────────────────┘
+//                                                                                    │     DRGSCRL     │          btn1          │   │ LT(LAYER_SYM_NAV, bACKSPACE) │
+//                                                                                    └─────────────────┴────────────────────────┘   └──────────────────────────────┘
 [LAYER_ENTHIUM] = LAYOUT(
-      KC_CAPS       , KC_1                      , KC_2               , KC_3                        , KC_4                        , KC_5                     ,     KC_6              , KC_7                    , KC_8               , KC_9               , KC_0                     , TO(LAYER_QWERTY),
-      KC_TAB        , LT(LAYER_OSM_RIGHT, KC_Z) , KC_Y               , KC_U                        , KC_O                        , KC_SCLN                  ,     KC_Q              , KC_L                    , KC_D               , KC_P               , LT(LAYER_OSM_LEFT, KC_X) , KC_BSPC         ,
-      KC_ESC        , MT(MOD_LCTL, KC_C)        , MT(MOD_LALT, KC_I) , MT(MOD_LGUI, KC_E)          , MT(MOD_LSFT, KC_A)          , LT(LAYER_TMUX, KC_COMMA) ,     KC_K              , MT(MOD_RSFT, KC_H)      , MT(MOD_RGUI, KC_T) , MT(MOD_RALT, KC_N) , MT(MOD_RCTL, KC_S)       , KC_F            ,
-      KC_LEFT_SHIFT , KC_W                      , KC_MINUS           , KC_EQUAL                    , LT(LAYER_DEBUG_SYM, KC_DOT) , KC_SLASH                 ,     KC_J              , LT(LAYER_SYM_NAV, KC_M) , KC_G               , KC_B               , KC_V                     , KC_RIGHT_SHIFT  ,
-                                                                       LT(LAYER_NAV_NUM, KC_ENTER) , KC_R                        , LT(LAYER_MOUSE, KC_SPC)  ,     MO(LAYER_FN)      , KC_SPC                                                                                                         ,
-                                                                                                     LT(LAYER_SYM_NAV, KC_BSPC)  , MO(LAYER_DEBUG_SYM)      ,     MO(LAYER_SYM_NAV)
+      KC_CAPS , KC_1                      , KC_2               , KC_3                    , KC_4               , KC_5                        ,     KC_6                            , KC_7               , KC_8               , KC_9               , KC_0                        , DF(LAYER_QWERTY),
+      KC_TAB  , LT(LAYER_OSM_RIGHT, KC_V) , KC_B               , KC_G                    , KC_M               , KC_J                        ,     KC_EQUAL                        , KC_DOT             , KC_SLASH           , KC_MINUS           , LT(LAYER_OSM_LEFT, KC_QUOT) , KC_F            ,
+      KC_ESC  , MT(MOD_LCTL, KC_S)        , MT(MOD_LALT, KC_N) , MT(MOD_LGUI, KC_T)      , MT(MOD_LSFT, KC_H) , LT(LAYER_TMUX, KC_K)        ,     KC_COMMA                        , MT(MOD_RSFT, KC_A) , MT(MOD_RGUI, KC_E) , MT(MOD_RALT, KC_I) , MT(MOD_RCTL, KC_C)          , KC_W            ,
+      CW_TOGG , KC_X                      , KC_P               , KC_D                    , KC_L               , KC_Q                        ,     KC_SEMICOLON                    , KC_O               , KC_U               , KC_Y               , KC_Z                        , KC_CAPS         ,
+                                                                 LT(LAYER_MOUSE, KC_SPC) , KC_R               , LT(LAYER_NAV_NUM, KC_ENTER) ,     MO(LAYER_FN)                    , KC_SPC                                                                                                       ,
+                                                                                           DRGSCRL            , KC_BTN1                     ,     LT(LAYER_SYM_NAV, KC_BACKSPACE)
 ),
 
 //        ┌───────────────┬─────────────────┬─────────────┬─────────────┬─────────────┬───────────────┐   ┌─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────┐
@@ -100,7 +101,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //        ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
 //        │ tRANSPARENT │  MOD_LCTL   │    left     │    down     │    rght     │      w      │   │      @      │      (      │      )      │      %      │      :      │ tRANSPARENT │
 //        ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-//        │ tRANSPARENT │ tRANSPARENT │      o      │ tRANSPARENT │      i      │ tRANSPARENT │   │      #      │      [      │      ]      │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │
+//        │ tRANSPARENT │ tRANSPARENT │      o      │ tRANSPARENT │      i      │ tRANSPARENT │   │      #      │      [      │      ]      │  sEMICOLON  │ tRANSPARENT │ tRANSPARENT │
 //        └─────────────┴─────────────┴─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┴─────────────┴─────────────┴─────────────┘
 //                                                  │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │   │ tRANSPARENT │ tRANSPARENT │
 //                                                  └─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┘
@@ -110,30 +111,30 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT,
       KC_BSPC        , LCTL(KC_W)     , KC_TRANSPARENT , KC_UP          , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_CIRCUMFLEX  , KC_LCBR        , KC_RCBR        , KC_DOLLAR      , PREV_ERR       , NEXT_ERR      ,
       KC_TRANSPARENT , MOD_LCTL       , KC_LEFT        , KC_DOWN        , KC_RIGHT       , KC_W           ,     KC_AT          , KC_LPRN        , KC_RPRN        , KC_PERC        , KC_COLON       , KC_TRANSPARENT,
-      KC_TRANSPARENT , KC_TRANSPARENT , KC_O           , KC_TRANSPARENT , KC_I           , KC_TRANSPARENT ,     KC_HASH        , KC_LBRC        , KC_RBRC        , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT,
+      KC_TRANSPARENT , KC_TRANSPARENT , KC_O           , KC_TRANSPARENT , KC_I           , KC_TRANSPARENT ,     KC_HASH        , KC_LBRC        , KC_RBRC        , KC_SEMICOLON   , KC_TRANSPARENT , KC_TRANSPARENT,
                                                          KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT                                                                    ,
                                                                           KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT
 ),
 
-//        ┌─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────┐   ┌─────────────┬─────────────┬─────────────────┬─────────────┬─────────────┬─────────────┐
-//        │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │   │ tRANSPARENT │ tRANSPARENT │   tRANSPARENT   │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │
-//        ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────────┼─────────────┼─────────────┼─────────────┤
-//        │ tRANSPARENT │      `      │      <      │      -      │      >      │ tRANSPARENT │   │ tRANSPARENT │ tRANSPARENT │ RGUI(LSFT(spc)) │ tRANSPARENT │ tRANSPARENT │     del     │
-//        ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────────┼─────────────┼─────────────┼─────────────┤
-//        │      ~      │      !      │      +      │      &      │      =      │ tRANSPARENT │   │    left     │    down     │       up        │    rght     │ tRANSPARENT │ tRANSPARENT │
-//        ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────────┼─────────────┼─────────────┼─────────────┤
-//        │ tRANSPARENT │      _      │      *      │      |      │      \      │ tRANSPARENT │   │ tRANSPARENT │  RGUI(spc)  │   tRANSPARENT   │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │
-//        └─────────────┴─────────────┴─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────────┴─────────────┴─────────────┴─────────────┘
-//                                                  │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │   │ tRANSPARENT │ tRANSPARENT │
-//                                                  └─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┘
-//                                                                │ tRANSPARENT │ tRANSPARENT │   │     no      │
-//                                                                └─────────────┴─────────────┘   └─────────────┘
+//        ┌─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬────────────────┐   ┌─────────────┬─────────────┬─────────────────┬─────────────┬─────────────┬─────────────────┐
+//        │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │  tRANSPARENT   │   │ tRANSPARENT │ tRANSPARENT │   tRANSPARENT   │ tRANSPARENT │ tRANSPARENT │   tRANSPARENT   │
+//        ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────────┤   ├─────────────┼─────────────┼─────────────────┼─────────────┼─────────────┼─────────────────┤
+//        │ tRANSPARENT │      `      │      <      │      >      │      -      │  tRANSPARENT   │   │ tRANSPARENT │ tRANSPARENT │ RGUI(LSFT(spc)) │ tRANSPARENT │ tRANSPARENT │ LALT(bACKSPACE) │
+//        ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────────┤   ├─────────────┼─────────────┼─────────────────┼─────────────┼─────────────┼─────────────────┤
+//        │      ~      │      !      │      +      │      &      │      =      │ QUOTE_NEW_LINE │   │    left     │    down     │       up        │    rght     │ tRANSPARENT │       del       │
+//        ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼────────────────┤   ├─────────────┼─────────────┼─────────────────┼─────────────┼─────────────┼─────────────────┤
+//        │ tRANSPARENT │      _      │      \      │      *      │      |      │  tRANSPARENT   │   │ tRANSPARENT │  RGUI(spc)  │   tRANSPARENT   │ tRANSPARENT │ tRANSPARENT │   tRANSPARENT   │
+//        └─────────────┴─────────────┴─────────────┼─────────────┼─────────────┼────────────────┤   ├─────────────┼─────────────┼─────────────────┴─────────────┴─────────────┴─────────────────┘
+//                                                  │ tRANSPARENT │ tRANSPARENT │  tRANSPARENT   │   │ tRANSPARENT │ tRANSPARENT │
+//                                                  └─────────────┼─────────────┼────────────────┤   ├─────────────┼─────────────┘
+//                                                                │ tRANSPARENT │  tRANSPARENT   │   │     no      │
+//                                                                └─────────────┴────────────────┘   └─────────────┘
 [LAYER_SYM_NAV] = LAYOUT(
-      KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT     , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT,
-      KC_TRANSPARENT , KC_GRAVE       , KC_LABK        , KC_MINUS       , KC_RABK        , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT , RGUI(LSFT(KC_SPC)) , KC_TRANSPARENT , KC_TRANSPARENT , KC_DEL        ,
-      KC_TILDE       , KC_EXCLAIM     , KC_PLUS        , KC_AMPERSAND   , KC_EQUAL       , KC_TRANSPARENT ,     KC_LEFT        , KC_DOWN        , KC_UP              , KC_RIGHT       , KC_TRANSPARENT , KC_TRANSPARENT,
-      KC_TRANSPARENT , KC_UNDERSCORE  , KC_ASTERISK    , KC_PIPE        , KC_BACKSLASH   , KC_TRANSPARENT ,     KC_TRANSPARENT , RGUI(KC_SPC)   , KC_TRANSPARENT     , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT,
-                                                         KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT                                                                        ,
+      KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT     , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT    ,
+      KC_TRANSPARENT , KC_GRAVE       , KC_LABK        , KC_RABK        , KC_MINUS       , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT , RGUI(LSFT(KC_SPC)) , KC_TRANSPARENT , KC_TRANSPARENT , LALT(KC_BACKSPACE),
+      KC_TILDE       , KC_EXCLAIM     , KC_PLUS        , KC_AMPERSAND   , KC_EQUAL       , QUOTE_NEW_LINE ,     KC_LEFT        , KC_DOWN        , KC_UP              , KC_RIGHT       , KC_TRANSPARENT , KC_DEL            ,
+      KC_TRANSPARENT , KC_UNDERSCORE  , KC_BACKSLASH   , KC_ASTERISK    , KC_PIPE        , KC_TRANSPARENT ,     KC_TRANSPARENT , RGUI(KC_SPC)   , KC_TRANSPARENT     , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT    ,
+                                                         KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT                                                                            ,
                                                                           KC_TRANSPARENT , KC_TRANSPARENT ,     XXXXXXX
 ),
 
@@ -184,11 +185,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //        ┌─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────┐   ┌─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────┐
 //        │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │   │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │
 //        ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-//        │ tRANSPARENT │ tRANSPARENT │  S_D_RMOD   │   S_D_MOD   │ tRANSPARENT │ tRANSPARENT │   │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │
+//        │ tRANSPARENT │  S_D_RMOD   │   S_D_MOD   │   LGUI(c)   │   LGUI(v)   │ tRANSPARENT │   │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │
 //        ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
 //        │ tRANSPARENT │    btn2     │   DRGSCRL   │   SNIPING   │    btn1     │ tRANSPARENT │   │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │
 //        ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
-//        │   QK_BOOT   │ tRANSPARENT │  DPI_RMOD   │   DPI_MOD   │ tRANSPARENT │ tRANSPARENT │   │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │
+//        │   QK_BOOT   │  DPI_RMOD   │   DPI_MOD   │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │   │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │
 //        └─────────────┴─────────────┴─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┴─────────────┴─────────────┴─────────────┘
 //                                                  │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │   │ tRANSPARENT │ tRANSPARENT │
 //                                                  └─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┘
@@ -196,9 +197,31 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //                                                                └─────────────┴─────────────┘   └─────────────┘
 [LAYER_MOUSE] = LAYOUT(
       KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT,
-      KC_TRANSPARENT , KC_TRANSPARENT , S_D_RMOD       , S_D_MOD        , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT,
+      KC_TRANSPARENT , S_D_RMOD       , S_D_MOD        , LGUI(KC_C)     , LGUI(KC_V)     , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT,
       KC_TRANSPARENT , KC_BTN2        , DRGSCRL        , SNIPING        , KC_BTN1        , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT,
-      QK_BOOT        , KC_TRANSPARENT , DPI_RMOD       , DPI_MOD        , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT,
+      QK_BOOT        , DPI_RMOD       , DPI_MOD        , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT,
+                                                         KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT                                                                    ,
+                                                                          KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT
+),
+
+//        ┌─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────┐   ┌─────────────┬─────────────┬─────────────┬─────────────┬─────────────┬─────────────┐
+//        │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │   │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │
+//        ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
+//        │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │   │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │
+//        ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
+//        │ tRANSPARENT │    btn2     │ tRANSPARENT │ tRANSPARENT │    btn1     │ tRANSPARENT │   │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │
+//        ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┼─────────────┼─────────────┼─────────────┤
+//        │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │   │ tRANSPARENT │    btn1     │    btn2     │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │
+//        └─────────────┴─────────────┴─────────────┼─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┼─────────────┴─────────────┴─────────────┴─────────────┘
+//                                                  │ tRANSPARENT │ tRANSPARENT │ tRANSPARENT │   │ tRANSPARENT │ tRANSPARENT │
+//                                                  └─────────────┼─────────────┼─────────────┤   ├─────────────┼─────────────┘
+//                                                                │ tRANSPARENT │ tRANSPARENT │   │ tRANSPARENT │
+//                                                                └─────────────┴─────────────┘   └─────────────┘
+[LAYER_MOUSE_AUTO] = LAYOUT(
+      KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT,
+      KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT,
+      KC_TRANSPARENT , KC_BTN2        , KC_TRANSPARENT , KC_TRANSPARENT , KC_BTN1        , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT,
+      KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_BTN1        , KC_BTN2        , KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT,
                                                          KC_TRANSPARENT , KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT , KC_TRANSPARENT                                                                    ,
                                                                           KC_TRANSPARENT , KC_TRANSPARENT ,     KC_TRANSPARENT
 ),
@@ -283,18 +306,45 @@ const uint16_t PROGMEM df_combo[]    = {LGUI_T(KC_D), LSFT_T(KC_F), COMBO_END};
 const uint16_t PROGMEM sf_combo[]    = {LALT_T(KC_S), LSFT_T(KC_F), COMBO_END};
 const uint16_t PROGMEM sdf_combo[]   = {LALT_T(KC_S), LGUI_T(KC_D), LSFT_T(KC_F), COMBO_END};
 const uint16_t PROGMEM we_combo[]    = {KC_W, KC_E, COMBO_END};
+const uint16_t PROGMEM as_combo[]    = {LCTL_T(KC_A), LALT_T(KC_S), COMBO_END};
+const uint16_t PROGMEM xc_combo[]    = {KC_X, KC_C, COMBO_END};
 combo_t                key_combos[]  = {
 
-    COMBO(sd_combo, VIM_SAVE), COMBO(kl_combo, KC_ENT),        COMBO(jk_combo, KC_LPRN),  COMBO(jl_combo, KC_RPRN), COMBO(jscln_combo, KC_PERC), COMBO(lscln_combo, KC_COLN),
-    COMBO(df_combo, KC_EQUAL), COMBO(sf_combo, KC_UNDERSCORE), COMBO(we_combo, KC_MINUS), COMBO(sdf_combo, CW_TOGG)
+    COMBO(sd_combo, VIM_SAVE), COMBO(df_combo, KC_EQUAL), COMBO(sf_combo, KC_UNDERSCORE), COMBO(xc_combo, KC_BSPC)
 
 };
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case MT(MOD_LSFT, KC_F):
+        case MT(MOD_RSFT, KC_J):
+        case LT(LAYER_DEBUG_SYM, KC_V):
+        case LT(LAYER_SYM_NAV, KC_M):
+            return 120;
+        case MT(MOD_LCTL, KC_A):
+            return 180;
+        default:
+            return TAPPING_TERM;
+    }
+}
+
+bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case MT(MOD_LCTL, KC_A):
+        case MT(MOD_LSFT, KC_F):
+        case MT(MOD_RSFT, KC_J):
+        case LT(LAYER_DEBUG_SYM, KC_V):
+        case LT(LAYER_SYM_NAV, KC_M):
+            return false;
+        default:
+            return true;
+    }
+}
+
 bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case LT(LAYER_NAV_NUM, KC_ENTER):
+        case LT(LAYER_SYM_NAV, KC_BACKSPACE):
         case LT(LAYER_MOUSE, KC_SPC):
-        case MT(MOD_LSFT, KC_TAB):
-        case MT(MOD_RSFT, KC_BSPC):
             // Immediately select the hold action when another key is pressed.
             return true;
         default:
@@ -309,17 +359,15 @@ bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
 uint16_t get_flow_tap_term(uint16_t keycode, keyrecord_t *record, uint16_t prev_keycode) {
     if (is_flow_tap_key(keycode) && is_flow_tap_key(prev_keycode)) {
         switch (keycode) {
+            case LT(LAYER_SYM_NAV, KC_BACKSPACE):
             case LT(LAYER_NAV_NUM, KC_ENTER):
             case LT(LAYER_MOUSE, KC_SPC):
-            case LT(CW_TOGG, LAYER_FN):
-            case MT(MOD_LSFT, KC_ESC):
-            case MT(MOD_RSFT, KC_QUOT):
             case MT(MOD_LSFT, KC_F):
             case MT(MOD_RSFT, KC_J):
             case LT(LAYER_SYM_NAV, KC_M):
             case LT(LAYER_DEBUG_SYM, KC_V):
-                return 0;
             case MT(MOD_LCTL, KC_A):
+                return 0;
             case MT(MOD_RCTL, KC_SCLN):
                 return 50;
             case MT(MOD_RALT, KC_L):
@@ -332,23 +380,11 @@ uint16_t get_flow_tap_term(uint16_t keycode, keyrecord_t *record, uint16_t prev_
     }
     return 0; // Disable Flow Tap.
 }
-// bool is_flow_tap_key(uint16_t keycode) {
-//     if ((get_mods() & (MOD_MASK_CG | MOD_BIT_LALT)) != 0) {
-//         return false; // Disable Flow Tap on hotkeys.
-//     }
-//     switch (get_tap_keycode(keycode)) {
-//         // removing A (ctl), space, enter, f, j
-//         case KC_B ... KC_E: // B, C, D, E
-//         case KC_G ... KC_I: // G, H, I
-//         case KC_K ... KC_Z: // K, L
-//         case KC_DOT:
-//         case KC_COMM:
-//         case KC_SCLN:
-//         case KC_SLSH:
-//             return true;
-//     }
-//     return false;
-// }
+void pointing_device_init_user(void) {
+    set_auto_mouse_layer(LAYER_MOUSE_AUTO); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
+    set_auto_mouse_enable(true);            // always required before the auto mouse feature will work
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case TMUX_CLOSE_WIN:
@@ -419,6 +455,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case TMUX_MOVE_PANE_RIGHT:
             if (record->event.pressed) {
                 SEND_STRING(SS_LCTL(SS_TAP(X_B)) SS_DELAY(100) SS_LSFT(SS_TAP(X_RBRC)));
+            }
+            break;
+        case QUOTE_NEW_LINE:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_QUOTE) SS_DELAY(100) SS_TAP(X_BSLS) SS_DELAY(100) SS_TAP(X_N) SS_DELAY(100) SS_TAP(X_QUOTE));
             }
             break;
         // ssh break
